@@ -6,15 +6,15 @@
         aspect-ratio="4"
         ></v-img>
         <v-card-text primary-title class="display-1 pb-1 pt-1">
-            {{calculateDate()}}<br/>
-            <span class="subheading">{{dayText(calculateDate())}}</span>
+            <span class="pink--text">{{calculateDate()}}</span><br/>
+            <span class="subheading ">{{dayText(calculateDate())}}</span>
         </v-card-text>
         <v-divider light></v-divider>
         <v-card-actions class="subheading pa-3 text-xs-left">
         Remember the date
         <v-spacer></v-spacer>
-        <v-icon class="material-icons deep-orange--text">calendar_today</v-icon> 
-          <div class="deep-orange--text">July 13th 2019</div>
+        <v-icon class="material-icons indigo--text">calendar_today</v-icon> 
+          <div class="indigo--text">July 13th 2019</div>
         </v-card-actions>
         <v-divider light></v-divider>
         <v-card-actions class="subheading pa-3 text-xs-left">

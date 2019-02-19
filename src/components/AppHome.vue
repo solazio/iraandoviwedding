@@ -1,13 +1,13 @@
 <template>
   <v-flex xs12 lg10 offset-lg1 pb-3 row fill-height>
     <iframe id="videoElement" class="video"
-      src='https://www.youtube.com/embed/F0rWVWnlEFw'></iframe>
+      src='https://www.youtube.com/embed/eE73-vc29y8'></iframe>
   </v-flex>
 </template>
 
 <script>
 export default {
-  name: 'AppHome',
+  name: 'AppHome'
 }
 </script>
 

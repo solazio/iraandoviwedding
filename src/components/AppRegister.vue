@@ -91,13 +91,25 @@
 
         <v-flex xs12 sm4 pa-1>
           <v-select
-            v-model="selectTour"
+            v-model="selectKievTour"
             required
-            :items="$store.state.tourSelect"
-            label="Thursday morning city tour"
-            :error-messages="selectTourErrors"
-            @input="$v.selectTour.$touch()"
-            @blur="$v.selectTour.$touch()"
+            :items="$store.state.tourKievSelect"
+            label="Kiev city tour, Friday 5.00pm"
+            :error-messages="selectKievTourErrors"
+            @input="$v.selectKievTour.$touch()"
+            @blur="$v.selectKievTour.$touch()"
+          ></v-select>
+        </v-flex>
+
+        <v-flex xs12 sm4 pa-1>
+          <v-select
+            v-model="selectCernobylTour"
+            required
+            :items="$store.state.tourCernobylSelect"
+            label="Cernobyl tour, Thursday 9.00am"
+            :error-messages="selectCernobylTourErrors"
+            @input="$v.selectCernobylTour.$touch()"
+            @blur="$v.selectCernobylTour.$touch()"
           ></v-select>
         </v-flex>
 
@@ -132,10 +144,7 @@
             ></v-date-picker>
           </v-menu>
         </v-flex>
-      </v-layout>
 
-
-      <v-layout align-center column>
         <v-flex xs12 sm4 pa-1>
           <v-text-field
             v-model="accessCode"
@@ -148,39 +157,37 @@
           ></v-text-field>
         </v-flex>
       </v-layout>
+
+
+      <!-- <v-layout align-center column>
+        <v-flex xs12 sm4 pa-1>
+          <v-text-field
+            v-model="accessCode"
+            :counter="12"
+            :error-messages="accessCodeErrors"
+            label="Access key"
+            required
+            @input="$v.accessCode.$touch()"
+            @blur="$v.accessCode.$touch()"
+          ></v-text-field>
+        </v-flex>
+      </v-layout> -->
       <v-layout justify-space-between row>
         <v-btn color="primary" @click.prevent="clear">clear</v-btn>
         <v-btn color="primary" @click.prevent="submit">register</v-btn>
       </v-layout>
     </form>
-    <v-btn color="primary" @click="getDataFromGoogle">Get Data</v-btn>
-    <v-snackbar
-      v-model="snackbar"
-      :bottom="y === 'bottom'"
-      :left="x === 'left'"
-      :multi-line="mode === 'multi-line'"
-      :right="x === 'right'"
-      :timeout="timeout"
-      :top="y === 'top'"
-      :vertical="mode === 'vertical'"
-    >
-      {{ text }}
-      <v-btn
-        color="pink"
-        flat
-        @click="snackbar = false"
-      >
-        Close
-      </v-btn>
-    </v-snackbar>
+    <!-- <v-btn color="primary" @click="getDataFromGoogle">Get Data</v-btn> -->
   </v-flex>
 </template>
 
 <script>
-// import { tryThis } from "../api/index.js";
+
 import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
-// import Axios from 'axios'
+import Axios from 'axios'
+
+const API_URL = 'https://iraandoviwedding-server.herokuapp.com';
 
 export default {
   mixins: [validationMixin],
@@ -192,7 +199,8 @@ export default {
     selectWine: { required },
     selectLiquor: { required },
     selectDiet: { required },
-    selectTour: { required },
+    selectKievTour: { required },
+    selectCernobylTour: { required },
     selectAllergy: { required },
     accessCode: { required },
     date: { required }
@@ -200,13 +208,6 @@ export default {
 
   data: () => ({
     arrayEvents: ["2019-07-13"],
-    
-    snackbar: false,
-    y: 'top',
-    x: null,
-    mode: '',
-    timeout: 6000,
-    text: '',
 
     firstName: '',
     lastName: '',
@@ -214,8 +215,9 @@ export default {
     selectWine: null,
     selectLiquor: null,
     selectDiet: null,
-    selectTour: null,
-    selectAllergy: null,
+    selectKievTour: null,
+    selectCernobylTour: null,
+    selectAllergy: [],
     date: null,
     accessCode: '',
 
@@ -250,10 +252,16 @@ export default {
         errors.push("Please select your hard liquor preferences");
       return errors;
     },
-    selectTourErrors() {
+    selectKievTourErrors() {
       const errors = [];
-      if (!this.$v.selectTour.$dirty) return errors;
-      !this.$v.selectTour.required && errors.push("Please selecct an option");
+      if (!this.$v.selectKievTour.$dirty) return errors;
+      !this.$v.selectKievTour.required && errors.push("Please selecct an option");
+      return errors;
+    },
+    selectCernobylTourErrors() {
+      const errors = [];
+      if (!this.$v.selectCernobylTour.$dirty) return errors;
+      !this.$v.selectCernobylTour.required && errors.push("Please selecct an option");
       return errors;
     },
     selectAllergyErrors() {
@@ -298,19 +306,10 @@ export default {
     submit() {
       this.$v.$touch();
       if (!this.$v.$anyError) {
-        if (this.accessCode == this.$store.state.accessCode) {
           this.asignValuesToStore();
-          this.$http
-          this.text='You have been successfully added to the guest list!';
-          this.snackbar = true;
-          this.clear();
-        } else {
-          this.text='Please provide a valid access key';
-          this.snackbar = true;
-        }
-      }else {
-        this.text='Please fill in all the fields';
-        this.snackbar = true;
+          this.sendDataToGoogleSheets(this.$store.state.userDetails);
+       }else {
+        this.$toast.error('Please fill in all the fields');
       }
     },
     clear() {
@@ -320,9 +319,11 @@ export default {
       this.selectWine = null;
       this.selectLiquor = null;
       this.selectDiet = null;
-      this.selectAllergy = null;
-      this.selectTour = null;
+      this.selectAllergy = [];
+      this.selectKievTour = null;
+      this.selectCernobylTour = null;
       this.date = null;
+      this.accessCode = null;
       this.$v.$reset();
     },
     asignValuesToStore() {
@@ -332,16 +333,54 @@ export default {
       this.$store.state.userDetails.selectWine = this.selectWine;
       this.$store.state.userDetails.selectLiquor = this.selectLiquor;
       this.$store.state.userDetails.selectDiet = this.selectDiet;
-      this.$store.state.userDetails.selectAllergy = this.selectAllergy;
-      this.$store.state.userDetails.selectTour = this.selectTour;
+      this.$store.state.userDetails.selectAllergy = this.selectAllergy.toString();
+      this.$store.state.userDetails.selectKievTour = this.selectKievTour;
+      this.$store.state.userDetails.selectCernobylTour = this.selectCernobylTour;
       this.$store.state.userDetails.date = this.date;
+      this.$store.state.userDetails.accessKey = this.accessCode;
     },
-    getDataFromGoogle () {
-      //  this.$index.tryThis("Print");
-    }
+    sendDataToGoogleSheets (dataToSend) {
+      const self = this;
+      Axios.post(`${API_URL}/newguest`, dataToSend)
+      .then(function (response) {
+          self.$toast.success(response.data.message);
+          self.clear();
+      })
+      .catch(function (error) {
+        self.$toast.error(error);
+      });
+    },
   }
-};
+}
 </script>
+
+
+<style>
+
+.toast-custom {
+  opacity: 0.95;
+  font-family: "Raleway", sans-serif;
+}
+@media only screen and (max-width: 720px){
+  .toast-custom {
+    width:100%;
+  }
+}
+.toast-custom .toasted {
+  border-radius:6px !important;
+  padding: 10px !important;
+}
+.toast-custom a{
+  background:rgba(255, 255, 255, 1);
+  color: #f44336 !important;
+  border-radius:8px;
+  text-decoration:none !important;
+}
+.toast-custom a:hover{
+  background:rgba(255, 255, 255, .9);
+}
+
+</style>
 
 
 

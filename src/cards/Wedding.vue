@@ -1,6 +1,6 @@
 <template>
     <v-flex xs12 lg10 offset-lg1 pb-3>
-        <v-card color="accent" class="grey--text text--darken-4">
+        <v-card color="secondary" class="grey--text text--darken-4">
                 <v-img
         :src="require('../assets/ovi-and-ira.jpg')" alt="engaged couple engagement ring"
         aspect-ratio="1.5"
@@ -30,14 +30,13 @@
             The party you'll remember
             <v-spacer></v-spacer>
 
-            <v-icon class="purple--text ">sentiment_very_satisfied</v-icon>
+            <v-icon class="blue--text ">sentiment_very_satisfied</v-icon>
             </v-card-actions>
         </v-card>
     </v-flex>
 </template>
 
 <style scoped>
-
 .link-style {
 
     text-decoration: none;
@@ -45,21 +44,21 @@
 
 /* unvisited link */
 .link-style:link {
-  color: #212121;
+  color: #b46494;
 }
 
 /* visited link */
 .link-style:visited {
-  color: #212121;
+  color: #b46494;
 }
 
 /* mouse over link */
 .link-style:hover {
-  color: white;
+  color: #F50057;
 }
 
 /* selected link */
 .link-style:active {
-  color: #212121;
+  color: #b46494;
 } 
 </style>

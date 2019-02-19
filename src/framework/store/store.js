@@ -11,7 +11,7 @@ export const store = new Vuex.Store({
           { title: 'REGISTER', icon: 'thumb_up', path:'/register' },
           { title: 'FAQ', icon: 'question_answer', path:'/FAQ' }
         ],
-        accessCode : '13/07ira+ovi',
+
         userDetails: {
           firstName: '',
           lastName: '',
@@ -20,14 +20,16 @@ export const store = new Vuex.Store({
           selectLiquor: null,
           selectDiet: null,
           selectAllergy: null,
-          selectTour: null,
-          date: null
+          selectKievTour: null,
+          selectCernobylTour: null,
+          date: null,
+          accessKey : ''
         },
+
         wineSelect: [
           'None',
           'White wine',
           'Red wine'
-
         ],
         hardLiquorSelect: [
           'None',
@@ -48,7 +50,11 @@ export const store = new Vuex.Store({
           'Gluten',
           'Eggs',
         ],
-        tourSelect: [
+        tourKievSelect: [
+          'Yes',
+          'No'
+        ],
+        tourCernobylSelect: [
           'Yes',
           'No'
         ],
@@ -83,7 +89,7 @@ export const store = new Vuex.Store({
             { id: 10,
               question: 'What to visit in Kiev?',
               answer: "Kiev Pechersk Lavra Monastery - there are underground caves you can walk through, Saint Sophia Cathedral. Saint Michael’s Golden Domed Monastery, Andriyvsky Uzviz & Andriyvska Church - pedestrian street with many locals selling hand made souvenirs, Maidan Nezalezhnosti - Independence Square, Khreshatyk - main boulevard, Goden Gate Monument, also you shoul take a ride on the funicular - cable car."},
-            { id: 10,
+            { id: 11,
               question: 'Can you recommend some bars?',
               answer: "<a href='https://m.facebook.com/barmandictat'>Barmen Dictat</a> is located <a href='https://www.google.co.uk/maps/place/Barman+Dictat/@50.4438394,30.5174143,17z/data=!3m1!4b1!4m5!3m4!1s0x40d4ce560ed8127f:0x589eb630013eb6b3!8m2!3d50.443836!4d30.519603'>here</a> and is our favorite - try tickle balls cocktail. <a href='https://m.facebook.com/AlchemistBarKiev/'>Alchemist Bar</a> is located <a href='https://www.google.co.uk/maps/place/Alchemist+Bar/@50.4395854,30.5186938,17z/data=!3m1!4b1!4m5!3m4!1s0x40d4cefe55d68037:0x8ce3bd1856510bfd!8m2!3d50.439582!4d30.5208825'>here</a> and you can find <a href='https://m.facebook.com/dogsandtailskiev/'>Dogs & Tails</a> right <a href='https://www.google.co.uk/maps/place/Dogs+%26+Tails/@50.4382291,30.5176651,17z/data=!3m1!4b1!4m5!3m4!1s0x40d4cefe6309d867:0x8de1948ab192de40!8m2!3d50.4382257!4d30.5198539'>here</a>."}
           ]

@@ -1,6 +1,6 @@
 <template>
     <v-flex xs12 lg10 offset-lg1 pb-3>
-        <v-card color="secondary" class="grey--text text--darken-4">
+        <v-card color="accent" class="grey--text text--darken-4">
                 <v-img
         :src="require('../assets/st-volodmyrs-cathedral.jpg')" alt="st volodmyrs cathedral kiev"
         aspect-ratio="1.8"
@@ -21,7 +21,7 @@
             <v-divider light></v-divider>
             <v-card-text class="text-xs-left">
                 <div>
-                    <div class="subheading">The church wedding ceremony will take place on Friday, July 12th at 2.00 PM at St Volodymyr's Cathedral in Kiev. Everyone is welcomed to join us while we talk to God.
+                    <div class="subheading">The church wedding ceremony will take place on Friday, July 12th at 2.00 PM at St Volodymyr's Cathedral in Kiev. The attendance is optional, but everyone is welcomed to join us while we talk to God.
                     </div>
                 </div>
             </v-card-text>
@@ -30,14 +30,13 @@
             Attendance is optional
             <v-spacer></v-spacer>
 
-            <v-icon class="green--text text--darken-1">location_city</v-icon>
+            <v-icon class="indigo--text">location_city</v-icon>
             </v-card-actions>
         </v-card>
     </v-flex>
 </template>
 
 <style scoped>
-
 .link-style {
 
     text-decoration: none;
@@ -45,21 +44,21 @@
 
 /* unvisited link */
 .link-style:link {
-  color: #212121;
+  color: #b46494;
 }
 
 /* visited link */
 .link-style:visited {
-  color: #212121;
+  color: #b46494;
 }
 
 /* mouse over link */
 .link-style:hover {
-  color: white;
+  color: #F50057;
 }
 
 /* selected link */
 .link-style:active {
-  color: #212121;
+  color: #b46494;
 } 
 </style>

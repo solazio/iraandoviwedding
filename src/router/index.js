@@ -8,6 +8,7 @@ import AppFAQ from '../components/AppFAQ.vue';
 Vue.use(VueRouter)
 
 export default new VueRouter ({
+    mode: 'history',
     routes: [
     {
         path: '/',
