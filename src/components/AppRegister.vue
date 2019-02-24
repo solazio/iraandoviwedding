@@ -134,8 +134,9 @@
               @input="$v.date.$touch()"
               @blur="$v.date.$touch()"
             ></v-text-field>
-            <v-date-picker v-model="date" 
-              @input="menu = false" 
+            <v-date-picker
+              v-model="date"
+              @input="menu = false"
               :events="arrayEvents"
               event-color="primary"
               first-day-of-week="1"
@@ -158,7 +159,6 @@
         </v-flex>
       </v-layout>
 
-
       <!-- <v-layout align-center column>
         <v-flex xs12 sm4 pa-1>
           <v-text-field
@@ -171,10 +171,10 @@
             @blur="$v.accessCode.$touch()"
           ></v-text-field>
         </v-flex>
-      </v-layout> -->
+      </v-layout>-->
       <v-layout justify-space-between row>
         <v-btn color="primary" @click.prevent="clear">clear</v-btn>
-        <v-btn color="primary" @click.prevent="submit">register</v-btn>
+        <v-btn color="primary" :disabled="disabledButton" @click.prevent="submit">register</v-btn>
       </v-layout>
     </form>
     <!-- <v-btn color="primary" @click="getDataFromGoogle">Get Data</v-btn> -->
@@ -182,12 +182,11 @@
 </template>
 
 <script>
-
 import { validationMixin } from "vuelidate";
 import { required, maxLength, email } from "vuelidate/lib/validators";
-import Axios from 'axios'
+import Axios from "axios";
 
-const API_URL = 'https://iraandoviwedding-server.herokuapp.com';
+const API_URL = "https://iraandoviwedding-server.herokuapp.com";
 
 export default {
   mixins: [validationMixin],
@@ -209,9 +208,9 @@ export default {
   data: () => ({
     arrayEvents: ["2019-07-13"],
 
-    firstName: '',
-    lastName: '',
-    email: '',
+    firstName: "",
+    lastName: "",
+    email: "",
     selectWine: null,
     selectLiquor: null,
     selectDiet: null,
@@ -219,9 +218,10 @@ export default {
     selectCernobylTour: null,
     selectAllergy: [],
     date: null,
-    accessCode: '',
+    accessCode: "",
 
-    menu: false
+    menu: false,
+    disabledButton: false
   }),
 
   computed: {
@@ -255,13 +255,15 @@ export default {
     selectKievTourErrors() {
       const errors = [];
       if (!this.$v.selectKievTour.$dirty) return errors;
-      !this.$v.selectKievTour.required && errors.push("Please selecct an option");
+      !this.$v.selectKievTour.required &&
+        errors.push("Please selecct an option");
       return errors;
     },
     selectCernobylTourErrors() {
       const errors = [];
       if (!this.$v.selectCernobylTour.$dirty) return errors;
-      !this.$v.selectCernobylTour.required && errors.push("Please selecct an option");
+      !this.$v.selectCernobylTour.required &&
+        errors.push("Please selecct an option");
       return errors;
     },
     selectAllergyErrors() {
@@ -297,7 +299,7 @@ export default {
     dateErrors() {
       const errors = [];
       if (!this.$v.date.$dirty) return errors;
-        !this.$v.date.required && errors.push("Arrival date is required");
+      !this.$v.date.required && errors.push("Arrival date is required");
       return errors;
     }
   },
@@ -306,10 +308,11 @@ export default {
     submit() {
       this.$v.$touch();
       if (!this.$v.$anyError) {
-          this.asignValuesToStore();
-          this.sendDataToGoogleSheets(this.$store.state.userDetails);
-       }else {
-        this.$toast.error('Please fill in all the fields');
+        this.disabledButton = true;
+        this.asignValuesToStore();
+        this.sendDataToGoogleSheets(this.$store.state.userDetails);
+      } else {
+        this.$toast.error("Please fill in all the fields");
       }
     },
     clear() {
@@ -339,47 +342,46 @@ export default {
       this.$store.state.userDetails.date = this.date;
       this.$store.state.userDetails.accessKey = this.accessCode;
     },
-    sendDataToGoogleSheets (dataToSend) {
+    sendDataToGoogleSheets(dataToSend) {
       const self = this;
       Axios.post(`${API_URL}/newguest`, dataToSend)
-      .then(function (response) {
+        .then(function(response) {
           self.$toast.success(response.data.message);
           self.clear();
-      })
-      .catch(function (error) {
-        self.$toast.error(error);
-      });
-    },
+          self.disabledButton = false;
+        })
+        .catch(function(error) {
+          self.$toast.error(error);
+        });
+    }
   }
-}
+};
 </script>
 
 
 <style>
-
 .toast-custom {
   opacity: 0.95;
   font-family: "Raleway", sans-serif;
 }
-@media only screen and (max-width: 720px){
+@media only screen and (max-width: 720px) {
   .toast-custom {
-    width:100%;
+    width: 100%;
   }
 }
 .toast-custom .toasted {
-  border-radius:6px !important;
+  border-radius: 6px !important;
   padding: 10px !important;
 }
-.toast-custom a{
-  background:rgba(255, 255, 255, 1);
+.toast-custom a {
+  background: rgba(255, 255, 255, 1);
   color: #f44336 !important;
-  border-radius:8px;
-  text-decoration:none !important;
+  border-radius: 8px;
+  text-decoration: none !important;
 }
-.toast-custom a:hover{
-  background:rgba(255, 255, 255, .9);
+.toast-custom a:hover {
+  background: rgba(255, 255, 255, 0.9);
 }
-
 </style>
 
 
